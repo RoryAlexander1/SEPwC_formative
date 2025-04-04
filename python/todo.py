@@ -9,12 +9,40 @@ def add_task(task):
     Input - a task to add to the list
     Return - nothing
     """
+    with open (TASK_FILE, "a", encoding="utf-8") as file:
+        file.write(task + "\n")
+
 
 def list_tasks():
-    return
+    """
+    Lists the tasks in the provided task list with their index.
+    
+    Args: 
+        list_tasks: A list of strings, where each string represents a task.
+        
+    Returns:
+        str: A formatted string containing the numbered tasks, or an empty string if the todo list is empty.
+    """
+
+    # read in the file TASK_FILE
+    with open (TASK_FILE, "r", encoding="utf-8") as file:
+        tasks = file.readlines()
+        
+    output_string = "Your task list:\n"
+    formatted_tasks = []
+    for index, task in enumerate(tasks):
+       formatted_tasks.append(f"{index + 1}. {task}")
+    output_string += "".join(formatted_tasks)
+    print(output_string)
+    return output_string.rstrip('\n')
+
+     
+               
+
 
 
 def remove_task(index):
+    
     return
 
 def main():
@@ -49,3 +77,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
