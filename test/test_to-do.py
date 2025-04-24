@@ -27,7 +27,7 @@ class TestTodoList():
         todo.remove_task(0)
         # list should be the same
         task_list = todo.list_tasks()
-        expected_list ="1. Item 1\n2. Item 2\n3. Item 3\n4. Item 4\n5. Item 5"
+        expected_list ="Your task list:\n1. Item 1\n2. Item 2\n3. Item 3\n4. Item 4\n5. Item 5"
         assert task_list == expected_list
         # should also error
         todo.remove_task(10)
@@ -37,7 +37,7 @@ class TestTodoList():
         # should not error!
         todo.remove_task(1)
         task_list = todo.list_tasks()
-        new_expected = "1. Item 2\n2. Item 3\n3. Item 4\n4. Item 5"
+        new_expected = "Your task list:\n1. Item 2\n2. Item 3\n3. Item 4\n4. Item 5"
         # note assert checks from 1 as we remove line 0
         assert task_list == new_expected
         os.remove(temp_list)
@@ -50,10 +50,12 @@ class TestTodoList():
         todo.add_task("Item 6")
         task_list = todo.list_tasks()
 
-        expected_list ="1. Item 1\n2. Item 2\n3. Item 3\n4. Item 4\n5. Item 5\n6. Item 6"
+        expected_list ="Your task list:\n1. Item 1\n2. Item 2\n3. Item 3\n4. Item 4\n5. Item 5\n6. Item 6"
+        # add 'Your task list:' to match list_tasks function
         assert task_list == expected_list
         os.remove(temp_list)
         
+  
     def test_main(self):
 
         temp_list = ".tasks.txt"
@@ -61,30 +63,32 @@ class TestTodoList():
         todo.TASK_FILE = temp_list
         
         from subprocess import run
-        result = run(["python3","todo.py","-l"], capture_output=True, check=True)
-        assert len(result.stdout) == 50
-        expected_list ="1. Item 1\n2. Item 2\n3. Item 3\n4. Item 4\n5. Item 5\n"
+        result = run(["python","todo.py","-l"], capture_output=True, check=True)
+        #print(result)
+        assert len(result.stdout) == 72
+        #changed number from 50 to account for extra characters from adding "your task list" and r before every \n
+        expected_list ="Your task list:\r\n1. Item 1\r\n2. Item 2\r\n3. Item 3\r\n4. Item 4\r\n5. Item 5\r\n"
         assert result.stdout.decode('UTF-8') == expected_list
-        
         from subprocess import run
-        result = run(["python3","todo.py","-a", "Item 6"], capture_output=True, check=True)
+        result = run(["python","todo.py","-a", "Item 6"], capture_output=True, check=True)
         assert len(result.stdout) == 0
 
         from subprocess import run
-        result = run(["python3","todo.py","-l"], capture_output=True, check=True)
-        assert len(result.stdout) == 60
-        expected_list ="1. Item 1\n2. Item 2\n3. Item 3\n4. Item 4\n5. Item 5\n6. Item 6\n"
+        result = run(["python","todo.py","-l"], capture_output=True, check=True)
+        assert len(result.stdout) == 83
+        expected_list ="Your task list:\r\n1. Item 1\r\n2. Item 2\r\n3. Item 3\r\n4. Item 4\r\n5. Item 5\r\n6. Item 6\r\n"
         assert result.stdout.decode('UTF-8') == expected_list
 
 
         from subprocess import run
-        result = run(["python3","todo.py","-r","6"], capture_output=True, check=True)
+        result = run(["python","todo.py","-r","6"], capture_output=True, check=True)
         assert len(result.stdout) < 40
 
         from subprocess import run
-        result = run(["python3","todo.py","-l"], capture_output=True, check=True)
-        assert len(result.stdout) == 50
-        expected_list ="1. Item 1\n2. Item 2\n3. Item 3\n4. Item 4\n5. Item 5\n"
+        result = run(["python","todo.py","-l"], capture_output=True, check=True)
+        print(result)
+        assert len(result.stdout) == 72
+        expected_list ="Your task list:\r\n1. Item 1\r\n2. Item 2\r\n3. Item 3\r\n4. Item 4\r\n5. Item 5\r\n"
         assert result.stdout.decode('UTF-8') == expected_list
 
 
@@ -121,7 +125,5 @@ class TestTodoList():
         assert score > 5
         assert score > 7
         assert score > 9
-
-pytest
 
 

@@ -25,6 +25,7 @@ def list_tasks():
     """
 
     # read in the file TASK_FILE
+    # used Gemini
     with open (TASK_FILE, "r", encoding="utf-8") as file:
         tasks = file.readlines()
         
@@ -33,16 +34,30 @@ def list_tasks():
     for index, task in enumerate(tasks):
        formatted_tasks.append(f"{index + 1}. {task}")
     output_string += "".join(formatted_tasks)
-    print(output_string)
     return output_string.rstrip('\n')
 
      
-               
-
-
-
 def remove_task(index):
-    
+    """Function: remove_task
+
+    Input: index - the number of the task to remove from the list
+    Return: nothing
+    """
+    if os.path.exists(TASK_FILE):
+        with open(TASK_FILE, "r", encoding="utf-8") as file:
+            tasks = file.readlines()
+        if 1 <= index <= len(tasks):
+            with open(TASK_FILE, "w", encoding="utf-8") as file:
+                for i, task in enumerate(tasks, start=1):
+                    if i != index:
+                        file.write(task)
+            print(f"Task at index {index} removed.")
+        else:
+            print(f"Invalid task number: {index}. Please enter a number between 1 and {len(tasks)}.")
+    else:
+        print("No tasks found.")
+
+   
     return
 
 def main():
