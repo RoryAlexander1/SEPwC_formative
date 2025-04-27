@@ -1,3 +1,4 @@
+""" This module handles command-line argument parsing using argparse."""
 import argparse
 import os
 
@@ -21,27 +22,26 @@ def list_tasks():
         list_tasks: A list of strings, where each string represents a task.
         
     Returns:
-        str: A formatted string containing the numbered tasks, or an empty string if the todo list is empty.
+        str: A formatted string containing numbered tasks, or an empty string
+        if todo list is empty.
     """
 
     # read in the file TASK_FILE
     # used Gemini
     with open (TASK_FILE, "r", encoding="utf-8") as file:
         tasks = file.readlines()
-        
     output_string = "Your task list:\n"
     formatted_tasks = []
     for index, task in enumerate(tasks):
-       formatted_tasks.append(f"{index + 1}. {task}")
+        formatted_tasks.append(f"{index + 1}. {task}")
     output_string += "".join(formatted_tasks)
     return output_string.rstrip('\n')
 
-     
+
 def remove_task(index):
     """Function: remove_task
-
     Input: index - the number of the task to remove from the list
-    Return: nothing
+    Return: Nothing
     """
     if os.path.exists(TASK_FILE):
         with open(TASK_FILE, "r", encoding="utf-8") as file:
@@ -53,14 +53,12 @@ def remove_task(index):
                         file.write(task)
             print(f"Task at index {index} removed.")
         else:
-            print(f"Invalid task number: {index}. Please enter a number between 1 and {len(tasks)}.")
+            print(f"Invalid task number: {index}. Please enter number between 1 and {len(tasks)}.")
     else:
         print("No tasks found.")
 
-   
-    return
-
 def main():
+    """ Main function to execute the program logic."""
     parser = argparse.ArgumentParser(description="Command-line Todo List")
     parser.add_argument(
             "-a",
@@ -92,4 +90,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
